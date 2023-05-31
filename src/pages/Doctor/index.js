@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   DoctorCategory,
   Gap,
@@ -7,7 +7,7 @@ import {
   NewsItem,
   RatedDoctor,
 } from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getData} from '../../utils';
 import {
   DummyDoctor1,
   DummyDoctor2,
@@ -47,7 +47,7 @@ export default function Doctor({navigation}) {
           <View style={styles.wrapperSection}>
             <Text style={styles.sectionLabel}>Top Rated Doctors</Text>
             <RatedDoctor
-              name="Wahyu Ramadhan"
+              name="Alexa Rachel"
               desc="Pediatrcian"
               avatar={DummyDoctor1}
               onPress={() => navigation.navigate('DoctorProfile')}

@@ -19,7 +19,7 @@ export default function Button({type, title, onPress, icon, disable}) {
     );
   }
   return (
-    <TouchableOpacity style={styles.container(type)}>
+    <TouchableOpacity style={styles.container(type)} onPress={onPress}>
       <Text style={styles.text(type)}>{title}</Text>
     </TouchableOpacity>
   );

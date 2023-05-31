@@ -1,14 +1,24 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ILLogo} from '../../assets';
-import { colors, fonts } from '../../utils';
+import {colors, fonts} from '../../utils';
+import {Fire} from '../../config';
 
 export default function Splash({navigation}) {
   useEffect(() => {
-    setTimeout(() =>{
-      navigation.replace('GetStarted')
-    }, 3000)
-  },[])
+    const unsubscribe = Fire.auth().onAuthStateChanged(user => {
+      setTimeout(() => {
+        if (user) {
+          console.log('user:', user);
+          navigation.replace('MainApp');
+        } else {
+          navigation.replace('GetStarted');
+        }
+      }, 3000);
+    });
+
+    return () => unsubscribe();
+  }, [navigation]);
   return (
     <View style={styles.page}>
       <ILLogo />

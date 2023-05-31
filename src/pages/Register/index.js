@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Button, Gap, Header, Input, Loading} from '../../components';
-import {colors, useForm} from '../../utils';
-import axios from 'axios';
 import {Fire} from '../../config';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {colors, showError, storeData, useForm} from '../../utils';
 
 export default function Register({navigation}) {
   const [form, setForm] = useForm({
@@ -16,74 +14,28 @@ export default function Register({navigation}) {
   const [loading, setLoading] = useState(false);
 
   const onContinue = () => {
-    //   console.log(form);
-    //   await axios
-    //     // .post('http://10.0.167.39:8000/api/user', {
-    //     .post('http://192.168.43.123:8000/api/user', {
-    //       name: form.fullName,
-    //       profession: form.profession,
-    //       email: form.email,
-    //       password: form.password,
-    //     })
-    //     .then(result => {
-    //       Fire.auth()
-    //         .createUserWithEmailAndPassword(form.email, form.password)
-    //         .then(success => {
-    //           const data = {
-    //             fullName: form.fullName,
-    //             profession: form.profession,
-    //             email: form.email,
-    //             password: form.password,
-    //           };
-
-    //           Fire.database()
-    //             .ref('users/' + success.user.uid + '/')
-    //             .set(data);
-
-    //           navigation.navigate('UploadPhoto', {
-    //             data: data,
-    //           });
-    //         })
-    //         .catch(error => {
-    //           console.log(error);
-    //         });
-    //       // navigation.navigate('UploadPhoto', {
-    //       //   data: form,
-    //       // });
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    //   //navigation.navigate('UploadPhoto');
-
-    console.log(form);
     setLoading(true);
     Fire.auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then(success => {
         setLoading(false);
         setForm('reset');
-        //httpL//firebase.com/users/id992dad0ndwa
         const data = {
           fullName: form.fullName,
-          proffesion: form.profession,
+          profession: form.profession,
           email: form.email,
+          uid: success.user.uid,
         };
         Fire.database()
           .ref('/users/' + success.user.uid + '/')
           .set(data);
-        console.log('success register :', success);
+        storeData('user', data);
+        navigation.navigate('UploadPhoto', data);
       })
       .catch(error => {
         const errorMessage = error.message;
         setLoading(false);
-        showMessage({
-          message: errorMessage,
-          type: 'default  ',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
-        console.log('error:', error);
+        showError(err.message);
       });
   };
   return (
