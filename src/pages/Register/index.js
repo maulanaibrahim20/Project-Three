@@ -83,5 +83,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
   },
-  content: {padding: 40, paddingTop: 0},
+  content: {
+    padding: 40,
+    paddingTop: 0,
+  },
 });
